@@ -5,14 +5,26 @@
 <head lang="en">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{{ STATIC_CDN_URL|getStaticPath }}css/bootstrap.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<div class="row center-block">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
-    <h2 class="text-center" style="text-align: center">Hi, srikanth</h2>
-{#    <table class="table"> <caption>Optional table caption.</caption> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr> </tbody> </table>#}
+</head>
+<body style="font-family: 'Roboto', sans-serif;">
+<div style="width: 950px;">
+    <h3 style="text-align: center;">Payslip for the month of {{ "currentMonth"|getPaySlipDate }}</h3>
+    <p>Hi, {{ paySlipData.basicDetails|getValue:"employee name" }}</p>
+    <p>Your payslip for the month of {{ "currentMonth"|getPaySlipDate }} is generated successfully. please find the attached document for your payslip.</p>
 </div>
+<footer style="margin-top: 50px;">
+    <address>
+        Regards,<br>
+        <a href="mailto:praveen@customfurnish.com">B.Praveen Kumar,</a><br>
+        HR and Admin,<br>
+        Hinshitsu Manufacturing Pvt Ltd,<br>
+        website : <a href="www.customfurnish.com">customfurnish.com.</a><br>
+        Mobile : 8499981621
+    </address>
+</footer>
+<hr>
 {% block main_content %}
 {% endblock main_content %}
 </body>

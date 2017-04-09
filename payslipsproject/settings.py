@@ -93,7 +93,7 @@ DATABASES = {
        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'payslips',
         'USER': 'root',
-        'PASSWORD': '1234',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -125,6 +125,7 @@ JOB_FAILURE_REPORT_GROUP = "mvsrikanth230@gmail.com"
 EMAIL_ID_PASSWORD = "sriaditya@123"
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
+SMTP_MAIL_LIMIT = 100
 
 
 # Internationalization
@@ -149,6 +150,8 @@ STATIC_URL = '/static/'
 STATIC_CDN_URL = '/static/'
 
 ACTUAL_BASE_PATH = BASE_DIR
+
+
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),

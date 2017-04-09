@@ -4,11 +4,12 @@ from datetime import datetime
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import render_to_string, get_template
-import pdfkit
-from hrOperations.models import PaySlipInfo
+# import pdfkit
+from hrOperations.models import PaySlipInfo, smtpStatus
 from payslipsproject.constants import MANDATORY_FIELDS_FOR_PAYSLIP, BULK_IMPORT_ERROR_SCHEMA, BULK_IMPORT_ERROR_CODES, \
-    PAYSLIPS_UPLOAD_FORMAT, PAYSLIPS_UPLOAD_FORMAT_VERSION
-from payslipsproject.settings import STATIC_CDN_URL
+    PAYSLIPS_UPLOAD_FORMAT, PAYSLIPS_UPLOAD_FORMAT_VERSION, DEDUCTION_FIELDS, EARNING_FIELDS, COMPANY_DETAILS
+from payslipsproject.settings import STATIC_CDN_URL, SMTP_MAIL_LIMIT
+import requests
 
 __author__ = 'oliverqueen'
 
@@ -64,13 +65,13 @@ class ExcelOperations():
         all_email_ids = []
         duplicate_emails = []
         for each_record in excel_data_as_json:
-                all_email_ids.append(each_record.get("email id"))
+            all_email_ids.append(each_record.get("email id"))
         duplicate_emails = [k for k, v in Counter(all_email_ids).items() if v > 1]
         if duplicate_emails:
             self.validation_report["result"] = {"errorCode": BULK_IMPORT_ERROR_SCHEMA.get("DUPLICATES"),
-                                            "errorMsg": BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("DUPLICATES")),
-                                            "other": duplicate_emails
-                                            }
+                                                "errorMsg": BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("DUPLICATES")),
+                                                "other": duplicate_emails
+                                                }
 
     def check_for_mandatory_fields(self, excel_data_as_json):
         keys_list = [each_key.lower() for each_key in excel_data_as_json[0].keys()]
@@ -98,13 +99,14 @@ class PaySlipEmailOps():
     def __init__(self, extracted_json):
         self.extracted_excel_data = extracted_json
         self.analyzed_data = dict(alreadySentUsers=list())
+        self.mail_count_report = dict(result=dict())
 
     def check_for_unique_entries(self):
         all_email_ids_of_excel_data = list()
         email_ids_of_previous_users = list()
         for each_record in self.extracted_excel_data:
             all_email_ids_of_excel_data.append(each_record.get("email id"))
-        users_list_of_email_archives = PaySlipInfo.objects.filter(uploadedDate=datetime.now().date())
+        users_list_of_email_archives = PaySlipInfo.objects.filter(uploadedDate=datetime.now().date(), emailStatus=True)
         if users_list_of_email_archives:
             for each_user in users_list_of_email_archives:
                 email_ids_of_previous_users.append(each_user.emailId)
@@ -122,11 +124,52 @@ class PaySlipEmailOps():
                 filtered_data_to_push.append(each_record)
         return filtered_data_to_push
 
+    def check_for_mail_limit(self, mail_records):
+        try:
+            mail_status_register = smtpStatus.objects.get(date=datetime.now().date())
+            no_of_mails_remaining = SMTP_MAIL_LIMIT - mail_status_register.noOfMails
+            if len(mail_records) > no_of_mails_remaining or len(mail_records) > SMTP_MAIL_LIMIT:
+                self.mail_count_report["result"] = {
+                "errorCode":BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"),
+                "errorMsg":BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"))+"you can only send "+str(no_of_mails_remaining)+" mails for today"
+                }
+        except smtpStatus.DoesNotExist:
+            print "Data doesn't exist in db"
+        return self.mail_count_report
+
 
 def get_html_string(data_dict, request):
-    # template = get_template("baseTemplates/emailTemplate.html")
-    # context = Context(request)
-    # html_safe_string = template.render(context)
-    html_safe_string = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "request":request}))
-    # pdfkit.from_string(html_safe_string, 'output.pdf')
-    return html_safe_string
+    pay_slip_data = calculate_pay_slip(data_dict)
+    html_safe_string = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
+    pdf_string = render_to_string('baseTemplates/pdfTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
+    return html_safe_string, pdf_string
+
+def calculate_pay_slip(data_dict):
+    pay_slip_struct = dict(deductions=dict(), grossEarnings=dict(), totalDeductions="", totalEarnings="", totalNetPay="", basicDetails=dict())
+    deductions_list = []
+    earnings_list = []
+    for key , value in data_dict.items():
+        if key.lower() in DEDUCTION_FIELDS:
+            pay_slip_struct["deductions"].update({key:value})
+            deductions_list.append(value)
+        elif key.lower() in EARNING_FIELDS:
+            pay_slip_struct["grossEarnings"].update({key:value})
+            earnings_list.append(value)
+        else:
+            pay_slip_struct["basicDetails"].update({key:value})
+    pay_slip_struct["totalDeductions"] = sum(deductions_list)
+    pay_slip_struct["totalEarnings"] = sum(earnings_list)
+    pay_slip_struct["totalNetPay"] = sum(earnings_list)-sum(deductions_list)
+    return pay_slip_struct
+
+
+def get_payslip_date():
+    today_date = datetime.now().date().strftime('%B, %Y')
+    return today_date
+
+def is_network_available():
+    try:
+        requests.get("http://www.google.com")
+        return True
+    except requests.ConnectionError:
+        return False

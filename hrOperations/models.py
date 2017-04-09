@@ -14,7 +14,7 @@ class PaySlipUploads(models.Model):
 
 class PaySlipInfo(models.Model):
     uploadId = models.ForeignKey(PaySlipUploads)
-    uploadedDate = models.DateField(datetime.now().date().strftime('%d-%m-%Y'))
+    uploadedDate = models.DateField(datetime.now().date())
     employeeName = models.CharField(max_length=256)
     emailId = models.EmailField()
     department = models.CharField(max_length=256)
@@ -47,5 +47,5 @@ class PaySlipInfo(models.Model):
     emailStatus = models.BooleanField(default=False)
 
 class smtpStatus(models.Model):
-    date = models.DateField(default=datetime.now().date().strftime('%d-%m-%Y'))
+    date = models.DateField(default=datetime.now().date())
     noOfMails = models.IntegerField()
