@@ -107,14 +107,15 @@ class PaySlipEmailOps():
         email_ids_of_previous_users = list()
         for each_record in self.extracted_excel_data:
             all_email_ids_of_excel_data.append(each_record.get("email id"))
-        users_list_of_email_archives = PaySlipInfo.objects.filter(uploadedDate=datetime.now().date(), emailStatus=True)
-        if users_list_of_email_archives:
-            for each_user in users_list_of_email_archives:
-                email_ids_of_previous_users.append(each_user.emailId)
-            for each_email in all_email_ids_of_excel_data:
-                if each_email in email_ids_of_previous_users:
-                    self.analyzed_data["alreadySentUsers"].append(each_email)
-        else:
+        try:
+            users_list_of_email_archives = PaySlipInfo.objects.filter(uploadedDate=datetime.now().date(), emailStatus=True)
+            if users_list_of_email_archives:
+                for each_user in users_list_of_email_archives:
+                    email_ids_of_previous_users.append(each_user.emailId)
+                for each_email in all_email_ids_of_excel_data:
+                    if each_email in email_ids_of_previous_users:
+                        self.analyzed_data["alreadySentUsers"].append(each_email)
+        except:
             self.analyzed_data["alreadySentUsers"] = list()
         return self.analyzed_data
 
@@ -131,8 +132,8 @@ class PaySlipEmailOps():
             no_of_mails_remaining = SMTP_MAIL_LIMIT - mail_status_register.noOfMails
             if len(mail_records) > no_of_mails_remaining or len(mail_records) > SMTP_MAIL_LIMIT:
                 self.mail_count_report["result"] = {
-                "errorCode":BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"),
-                "errorMsg":BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"))+"you can only send "+str(no_of_mails_remaining)+" mails for today"
+                    "errorCode":BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"),
+                    "errorMsg":BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"))+"you can only send "+str(no_of_mails_remaining)+" mails for today"
                 }
         except smtpStatus.DoesNotExist:
             print "Data doesn't exist in db"
