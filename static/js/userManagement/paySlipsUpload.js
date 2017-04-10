@@ -5,11 +5,11 @@ $(document).ready(function(){
     var alreadySentUsersList = [];
     $(".upload-payslips-in-bulk").click(function(){
         var FormId = $(this).attr("data-id");
-        console.log($("#pay-slips-file").val());
-        if($("#pay-slips-file").val() != ""){
+        if($("#pay-slips-file").val() != "")
+        {
             var formData = new FormData($(this).closest("#"+FormId)[0]);
-            //$('#ajax-processing-modal').modal('show');
-            var bulkPayslipsCallBacks = {
+            var bulkPayslipsCallBacks =
+            {
                 "success": function(data){
                     console.log(data.jsonData);
                     $('#ajax-processing-modal').modal('hide');
@@ -27,7 +27,8 @@ $(document).ready(function(){
             };
             hrmutils.getResponse("POST","ops-hr/api/payslips-in-bulk",formData,bulkPayslipsCallBacks, true)
         }
-        else{
+        else
+        {
             alert("please select the file first.");
         }
     });
@@ -53,14 +54,24 @@ $(document).ready(function(){
     }
 
     function sendEmailsToUsers(mailsData){
-        $('#mails-processing-modal').modal('show');
+        $('.emails-count').text("Sending "+mailsData.length+ " emails please wait...");
+        $('#mails-processing-modal').modal({backdrop: 'static', keyboard: false}, 'show');
         var processEmailsCallBacks = {
             "success": function(data){
                 $('#mails-processing-modal').modal('hide');
-                $("#mails-success-report-modal").show()
+                if(alreadySentUsersList.length>1){
+                    $("#already-sent-users").text("already sent users :" + alreadySentUsersList);
+                    $("#mails-success-report-modal").modal('show');
+                }
+                else{
+                    $("#mails-success-report-modal").modal('show');
+                }
             },
             "error": function(data){
                 $('#mails-processing-modal').modal('hide');
+                if(data.responseJSON.errorData){
+                    $("#misc-error-msg-data-for-mail").text(data.responseJSON.errorData.errorCode + ":" + data.responseJSON.errorData.errorMsg)
+                }
                 $("#mails-error-modal").modal('show');
             }
         };

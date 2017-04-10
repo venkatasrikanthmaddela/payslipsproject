@@ -1,3 +1,4 @@
+from hrOperations.db_ops import UpdateInDb
 from hrOperations.emailWorker import EmailWorkerOps
 from hrOperations.utils import ExcelOperations, PaySlipEmailOps, get_html_string
 from payslipsproject.constants import BULK_IMPORT_ERROR_SCHEMA, BULK_IMPORT_ERROR_CODES
@@ -36,7 +37,7 @@ class SendPaySlipsInBulk(APIView):
         else:
             email_prep_data_object = EmailWorkerOps(filtered_data, request)
             all_html_string = email_prep_data_object.prepare_html_content()
-            return Response({"result": "success", "userData":all_html_string}, 200)
+            return Response({"result": "success", "userData":all_html_string, "alreadySent":result_info["alreadySentUsers"]}, 200)
 
 
 class ProcessEmails(APIView):
@@ -44,3 +45,6 @@ class ProcessEmails(APIView):
         email_status = EmailWorkerOps([], request).send_emails_to_the_users(request.data)
         if email_status.get("errorResult"):
             return Response({"result":"error", "errorData":email_status.get("errorResult")}, 500)
+        else:
+            UpdateInDb(request.data, request).initiate_data_to_upload()
+            return Response({"result":"success"}, 200)

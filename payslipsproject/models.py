@@ -6,7 +6,7 @@ __author__ = 'oliverqueen'
 class CustomModel(models.Model):
     createdAt = models.DateTimeField(default=datetime.utcnow())
     modifiedAt = models.DateTimeField(default=datetime.utcnow())
-    isDeleted = models.BooleanField()
+    isDeleted = models.BooleanField(default=False)
 
     class Meta:
         abstract = True

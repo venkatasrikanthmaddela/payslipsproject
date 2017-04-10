@@ -1,16 +1,21 @@
 {% extends 'baseTemplates/base.html' %}
 {% block project_content %}
     <div class="container" style="margin-top: 100px;">
-
-        <form class="form-signin">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <label for="inputEmail" class="sr-only">username</label>
-            <input type="text" id="inputEmail" class="form-control user-name-field" placeholder="enter username">
-            <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control password-field" placeholder="Password">
-            <a class="btn btn-lg btn-primary btn-block admin-login">Sign in</a>
-        </form>
-
+        {% if request.user.username %}
+            <ul class="pull-left">
+                <li style="list-style: none"><a class="btn btn-lg btn-primary btn-block" style="text-align: right;">Manage Account</a></li>
+                <li style="list-style: none"><a class="btn btn-lg btn-primary btn-block" href="{% url 'dashboard-page' %}" style="text-align: right;">Go to dashboard</a></li>
+            </ul>
+        {% else %}
+            <form class="form-signin">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <label for="inputEmail" class="sr-only">username</label>
+                <input type="text" id="inputEmail" class="form-control user-name-field" placeholder="enter username">
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control password-field" placeholder="Password">
+                <a class="btn btn-lg btn-primary btn-block admin-login">Sign in</a>
+            </form>
+        {% endif %}
     </div> <!-- /container -->
 
 {% endblock project_content %}

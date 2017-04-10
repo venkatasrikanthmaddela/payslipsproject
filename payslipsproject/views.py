@@ -1,6 +1,8 @@
+from dashboardManagement.views import DashboardPage
+
 __author__ = 'oliverqueen'
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from hrOperations.utils import calculate_pay_slip
 from payslipsproject.constants import SAMPLE_DICT, COMPANY_DETAILS

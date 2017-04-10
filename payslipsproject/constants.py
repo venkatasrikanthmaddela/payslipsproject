@@ -29,7 +29,15 @@ PAYSLIPS_UPLOAD_FORMAT = {
             "arrears pf deduction": ["<type 'float'>", "<type 'int'>"],
             "arrears esi deduction": ["<type 'float'>", "<type 'int'>"],
             "total deduction": ["<type 'float'>", "<type 'int'>"],
-            "net pay": ["<type 'float'>", "<type 'int'>"]
+            "net pay": ["<type 'float'>", "<type 'int'>"],
+            "month":["<type 'int'>", "<type 'float'>"], "year":["<type 'int'>", "<type 'float'>"],
+            "employee number":["<type 'str'>", "<type 'unicode'>"],
+            "bank name":["<type 'str'>", "<type 'unicode'>"],
+            "bank account number":["<type 'str'>", "<type 'unicode'>", "<type 'float'>"],
+            "pan number":["<type 'str'>", "<type 'unicode'>"],
+            "ppf number":["<type 'str'>", "<type 'unicode'>"],
+            "location":["<type 'str'>", "<type 'unicode'>"],
+            "effective work days":["<type 'int'>", "<type 'float'>"],
             }
 }
 
@@ -62,7 +70,7 @@ BULK_IMPORT_ERROR_CODES = {
     "4533": "We found some duplicates on the given data. please remove them and try again. Thank you",
     "2500": "No internet connection found. please check",
     "2501": "Email limit for today is exceeded."
-    }
+}
 
 MANDATORY_FIELDS_FOR_PAYSLIP = ["employee name","email id","department","designation","Basic and DA","House Rent Allowance",
                                 "Conveyance",
@@ -75,7 +83,6 @@ MANDATORY_FIELDS_FOR_PAYSLIP = ["employee name","email id","department","designa
                                 "Med. Allowance",
                                 "Gross Earnings",
                                 "Provident Fund",
-                                "ESI",
                                 "Prof Tax",
                                 "Income Tax",
                                 "Salary Advance",
@@ -85,6 +92,14 @@ MANDATORY_FIELDS_FOR_PAYSLIP = ["employee name","email id","department","designa
                                 "Arrears PF Deduction",
                                 "Arrears ESI Deduction",
                                 "Total Deduction",
-                                "Net Pay"]
+                                "Net Pay",
+                                "month",
+                                "year",
+                                "employee number",
+                                "bank account number",
+                                "ppf number",
+                                "location",
+                                "effective work days",
+                                ]
 
-SAMPLE_DICT = {u'gross earnings': 39000, u'net pay': 33677, u'total deduction': 5323, u'other deduction reimbt': 0, u'special allowance': 4700, u'arrears': 0, u'salary advance': 0, u'employee name': u'mv srikanth', u'arrears pf deduction': 0, u'leave travel allowance': 2000, u'provident fund': 1800, u'cug': 0, u'department': u'IT', u'basic and da': 19500, u'lwf': 0, u'esi': 0, u'income tax': 1523, u'arrears esi deduction': 0, u'med. allowance': 1250, u'o.t': 0, u'other deductions': 1800, u'house rent allowance': 9750, u'prof tax': 200, u'designation': u'software developer', u'edu allow': 200, u'conveyance': 1600, u'email id': u'srikk1309@live.com'}
+SAMPLE_DICT = {u'gross earnings': 39000, u'net pay': 33677, u'total deduction': 5323, u'other deduction reimbt': 0, u'special allowance': 4700, u'arrears': 0, u'salary advance': 0, u'employee name': u'mv srikanth', u'arrears pf deduction': 0, u'leave travel allowance': 2000, u'provident fund': 1800, u'cug': 0, u'department': u'IT', u'basic and da': 19500, u'lwf': 0, u'esi': 0, u'income tax': 1523, u'arrears esi deduction': 0, u'med. allowance': 1250, u'o.t': 0, u'other deductions': 1800, u'house rent allowance': 9750, u'prof tax': 200, u'designation': u'software developer', u'edu allow': 200, u'conveyance': 1600, u'email id': u'srikk1309@live.com', u'month':2, u'year':2017}

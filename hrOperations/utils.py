@@ -93,7 +93,8 @@ class ExcelOperations():
             for key, value in each_record.items():
                 if str(type(value)) not in PAYSLIPS_UPLOAD_FORMAT.get(PAYSLIPS_UPLOAD_FORMAT_VERSION[-1]).get(key.lower()):
                     self.validation_report["result"] = {"errorCode": BULK_IMPORT_ERROR_SCHEMA.get("DATA FORMAT ERROR"),
-                                                        "errorMsg": BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("DATA FORMAT ERROR"))
+                                                        "errorMsg": BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("DATA FORMAT ERROR")),
+                                                        "other": key
                                                         }
 class PaySlipEmailOps():
     def __init__(self, extracted_json):

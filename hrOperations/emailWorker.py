@@ -15,15 +15,16 @@ class EmailWorkerOps():
     def prepare_html_content(self):
         for each_record in self.filtered_user_data:
             html_string, pdf_string = get_html_string(each_record, self.request)
-            pdf = pdfkit.from_string(str(pdf_string), "")
+            # pdf = pdfkit.from_string(str(pdf_string), "")
             each_record["htmlString"] = html_string
-            each_record["pdfString"] = pdf
+            each_record["pdfString"] = pdf_string
         return self.filtered_user_data
 
     def send_emails_to_the_users(self, user_content):
         for each_user_data in user_content:
             if each_user_data.get("email id") and is_network_available():
-                email_result = send_mail("Payslip for the month "+get_payslip_date(), each_user_data.get("htmlString"), each_user_data.get("email id"), each_user_data.get("pdfString"))
+                pdf = pdfkit.from_string(str(each_user_data.get("pdfString")), "")
+                email_result = send_mail("Payslip for the month "+get_payslip_date(), each_user_data.get("htmlString"), each_user_data.get("email id"), pdf)
                 self.mail_status_list["mailResultList"].append(email_result)
             else:
                 self.mail_status_list["errorResult"] = {"errorCode":BULK_IMPORT_ERROR_SCHEMA.get("INTERNET CONNECTION"),

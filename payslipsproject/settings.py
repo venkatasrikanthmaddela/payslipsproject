@@ -128,6 +128,7 @@ SMTP_PORT = 587
 SMTP_MAIL_LIMIT = 100
 
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 

@@ -28,5 +28,5 @@ urlpatterns = [
     url(r'ops-hr/api/', include('hrOperations.api_urls')),
     url(r'ops-hr/', include('hrOperations.urls')),
     url(r'test-template', EmailPage.as_view()),
-    url(r'', SignInPage.as_view()),
+    url(r'', SignInPage.as_view(), name='home'),
 ]

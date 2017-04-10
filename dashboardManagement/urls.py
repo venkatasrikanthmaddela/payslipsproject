@@ -6,5 +6,5 @@ from django.contrib import admin
 from payslipsproject.views import HomePage, SignInPage
 
 urlpatterns = [
-    url(r'dashboard', DashboardPage.as_view(), name="dashboard-page"),
+    url(r'/dashboard', DashboardPage, name="dashboard-page"),
 ]
