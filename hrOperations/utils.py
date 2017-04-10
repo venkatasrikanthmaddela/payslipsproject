@@ -135,7 +135,7 @@ class PaySlipEmailOps():
                     "errorCode":BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"),
                     "errorMsg":BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("MAILS LIMIT EXCEEDED"))+"you can only send "+str(no_of_mails_remaining)+" mails for today"
                 }
-        except smtpStatus.DoesNotExist:
+        except:
             print "Data doesn't exist in db"
         return self.mail_count_report
 
