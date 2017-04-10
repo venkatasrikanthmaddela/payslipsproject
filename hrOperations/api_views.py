@@ -18,10 +18,10 @@ class PayslipGeneration(APIView):
                                                             }
                             },500)
         else:
-            # validation_report = ExcelOperations(input_excel).validate_excel_data(extracted_data)
-            # if validation_report["result"]:
-            #     return Response({"result":"error", "errorData":validation_report["result"]}, 500)
-            # else:
+            validation_report = ExcelOperations(input_excel).validate_excel_data(extracted_data)
+            if validation_report["result"]:
+                return Response({"result":"error", "errorData":validation_report["result"]}, 500)
+            else:
                 return Response({"result":"success", "jsonData": extracted_data}, 200)
 
 class SendPaySlipsInBulk(APIView):
@@ -36,12 +36,11 @@ class SendPaySlipsInBulk(APIView):
         else:
             email_prep_data_object = EmailWorkerOps(filtered_data, request)
             all_html_string = email_prep_data_object.prepare_html_content()
-            # email_status = email_prep_data_object.send_emails_to_the_users(all_html_string)
-            # if email_status.get("errorResult"):
-            #     return Response({"result":"error", "errorData":email_status.get("errorResult")}, 500)
             return Response({"result": "success", "userData":all_html_string}, 200)
 
 
 class ProcessEmails(APIView):
     def post(self, request):
-        pass
+        email_status = EmailWorkerOps([], request).send_emails_to_the_users(request.data)
+        if email_status.get("errorResult"):
+            return Response({"result":"error", "errorData":email_status.get("errorResult")}, 500)

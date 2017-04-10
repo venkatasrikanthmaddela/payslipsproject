@@ -48,14 +48,46 @@
 </div>
 
 <div class="container">
-    <div class="modal fade" id="ajax-processing-modal">
+    <div class="modal fade" id="mails-error-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="text-center" style="">Something Went Wrong while sending emails.please try again.</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p style="color: red;" id="error-msg-data"></p>
+                    <p class="text-center" id="misc-error-msg-data"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="mails-success-modal">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                 </div>
                 <div class="modal-body">
                     <h2 class="modal-title text-center">Sending emails.. please wait</h2>
-                    <img src="{% static 'img/ajax-load.gif' %}" class="center-block">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="mails-success-report-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <h2 class="text-center" style="color:green;">emails sent successfully</h2>
                 </div>
             </div>
         </div>

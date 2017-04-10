@@ -2,6 +2,7 @@
  * Created by oliverqueen on 3/31/2017.
  */
 $(document).ready(function(){
+    var alreadySentUsersList = [];
     $(".upload-payslips-in-bulk").click(function(){
         var FormId = $(this).attr("data-id");
         console.log($("#pay-slips-file").val());
@@ -34,7 +35,10 @@ $(document).ready(function(){
         var bulkPayslipsEmailsCallBacks = {
             "success": function(data){
                 $('#success-modal').modal('hide');
+                alreadySentUsersList = data.alreadySent;
+                console.log(alreadySentUsersList);
                 sendEmailsToUsers(data.userData);
+
             },
             "error": function(data){
                 $('#success-modal').modal('hide');
@@ -43,20 +47,23 @@ $(document).ready(function(){
                     $("#misc-error-msg-data").text(data.responseJSON.errorData.other)
                 }
                 $('#error-processing-modal').modal('show');
-                //alert("error");
             }
         };
         hrmutils.getResponse("POST","ops-hr/api/send-payslips-emails-in-bulk",extractedData,bulkPayslipsEmailsCallBacks, false)
     }
 
-    function sendEmailsToUsers(data){
-
+    function sendEmailsToUsers(mailsData){
+        $('#mails-processing-modal').modal('show');
         var processEmailsCallBacks = {
-            "success": function(){
-
+            "success": function(data){
+                $('#mails-processing-modal').modal('hide');
+                $("#mails-success-report-modal").show()
+            },
+            "error": function(data){
+                $('#mails-processing-modal').modal('hide');
+                $("#mails-error-modal").modal('show');
             }
         };
-
-        hrmutils.getResponse("POST","ops-hr/api/process-emails-to-users",extractedData,processEmailsCallBacks, false)
+        hrmutils.getResponse("POST","ops-hr/api/process-emails-to-users",mailsData,processEmailsCallBacks, false)
     }
 });
