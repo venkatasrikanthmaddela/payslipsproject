@@ -28,9 +28,9 @@ class EmailWorkerOps():
             if each_user_data.get("email id") and is_network_available():
                 result = StringIO.StringIO()
                 # pdf = pisa.CreatePDF(StringIO.StringIO(each_user_data.get("pdfString").encode('utf-8')), result)
-                pdf = pisa.pisaDocument(StringIO.StringIO(each_user_data.get("pdfString").encode("UTF-8")), result, encoding="UTF-8")
-                # pdf = pdfkit.from_string(str(each_user_data.get("pdfString")), "")
-                email_result = send_mail("Payslip for the month "+get_payslip_date(), each_user_data.get("htmlString"), each_user_data.get("email id"), result.getvalue())
+                # pdf = pisa.pisaDocument(StringIO.StringIO(each_user_data.get("pdfString").encode("UTF-8")), result, encoding="UTF-8")
+                pdf = pdfkit.from_string(str(each_user_data.get("pdfString")), "")
+                email_result = send_mail("Payslip for the month "+get_payslip_date(), each_user_data.get("htmlString"), each_user_data.get("email id"), pdf)
                 self.mail_status_list["mailResultList"].append(email_result)
             else:
                 self.mail_status_list["errorResult"] = {"errorCode":BULK_IMPORT_ERROR_SCHEMA.get("INTERNET CONNECTION"),
