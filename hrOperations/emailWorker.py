@@ -1,7 +1,7 @@
 import os
 
 import pdfkit
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 import cStringIO as StringIO
 from hrOperations.utils import get_html_string, get_payslip_date, is_network_available
 from payslipsproject import settings
@@ -26,7 +26,7 @@ class EmailWorkerOps():
     def send_emails_to_the_users(self, user_content):
         for each_user_data in user_content:
             if each_user_data.get("email id") and is_network_available():
-                result = StringIO.StringIO()
+                # result = StringIO.StringIO()
                 # pdf = pisa.CreatePDF(StringIO.StringIO(each_user_data.get("pdfString").encode('utf-8')), result)
                 # pdf = pisa.pisaDocument(StringIO.StringIO(each_user_data.get("pdfString").encode("UTF-8")), result, encoding="UTF-8")
                 pdf = pdfkit.from_string(str(each_user_data.get("pdfString")), "")
