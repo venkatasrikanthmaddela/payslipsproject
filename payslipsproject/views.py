@@ -13,10 +13,20 @@ class HomePage(View):
     def get(self, request):
         return render(request, "baseTemplates/base.html")
 
+class LandingPage(View):
+    def get(self, request):
+        return render(request, "baseTemplates/landingPage.html", {"request":request})
+
 class SignInPage(View):
     def get(self, request):
-        return render(request, "baseTemplates/signInPage.html", {"request":request})
+        if request.user.username:
+                return render(request, "baseTemplates/landingPage.html", {"request": request})
+        else:
+            return render(request, "baseTemplates/signInPage.html", {"request":request})
 
+class SignUpPage(View):
+    def get(self, request):
+        return render(request, "baseTemplates/signUpPage.html", {"request":request})
 
 class EmailPage(View):
     def get(self, request):

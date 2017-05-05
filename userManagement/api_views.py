@@ -43,6 +43,11 @@ class loginUser(APIView):
             return Response({"error": str(e)}, 500)
 
 
+class SignUpUser(APIView):
+    def post(self, request):
+        pass
+
+
 @api_view(['GET','POST'])
 def logoutUser(request):
     try:

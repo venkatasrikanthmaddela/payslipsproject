@@ -17,17 +17,17 @@ $(document).ready(function(){
 
     function startProcessing(formData)
     {
-        $('#ajax-processing-modal').modal({backdrop: 'static', keyboard: false}, 'show');
+        //$('#ajax-processing-modal').modal({backdrop: 'static', keyboard: false}, 'show');
         var bulkPayslipsCallBacks =
         {
             "success": function(data){
                 console.log(data.jsonData);
-                $('#ajax-processing-modal').modal('hide');
-                $('#success-modal').modal('show');
+                //$('#ajax-processing-modal').modal('hide');
+                //$('#success-modal').modal('show');
                 sendPaySlipsInBulk(data.jsonData);
             },
             "error": function(data){
-                $('#ajax-processing-modal').modal('hide');
+                //$('#ajax-processing-modal').modal('hide');
                 $("#error-msg-data").text(data.responseJSON.errorData.errorCode + ":" + data.responseJSON.errorData.errorMsg);
                 if(data.responseJSON.errorData.other){
                     $("#misc-error-msg-data").text(data.responseJSON.errorData.other)
@@ -41,14 +41,14 @@ $(document).ready(function(){
     function sendPaySlipsInBulk(extractedData){
         var bulkPayslipsEmailsCallBacks = {
             "success": function(data){
-                $('#success-modal').modal('hide');
+                //$('#success-modal').modal('hide');
                 alreadySentUsersList = data.alreadySent;
                 console.log(alreadySentUsersList);
                 sendEmailsToUsers(data.userData);
 
             },
             "error": function(data){
-                $('#success-modal').modal('hide');
+                //$('#success-modal').modal('hide');
                 $("#error-msg-data").text(data.responseJSON.errorData.errorCode + ":" + data.responseJSON.errorData.errorMsg);
                 if(data.responseJSON.errorData.other){
                     $("#misc-error-msg-data").text(data.responseJSON.errorData.other)
@@ -60,12 +60,12 @@ $(document).ready(function(){
     }
 
     function sendEmailsToUsers(mailsData){
-        $('.emails-count').text("Sending "+mailsData.length+ " emails please wait...");
-        $('#mails-processing-modal').modal({backdrop: 'static', keyboard: false}, 'show');
+        //$('.emails-count').text("Sending "+mailsData.length+ " emails please wait...");
+        //$('#mails-processing-modal').modal({backdrop: 'static', keyboard: false}, 'show');
         var processEmailsCallBacks = {
             "success": function(data){
-                $('#mails-processing-modal').modal('hide');
-                if(alreadySentUsersList>0){
+                //$('#mails-processing-modal').modal('hide');
+                if(alreadySentUsersList){
                     $("#already-sent-users").text("already sent users :" + alreadySentUsersList);
                     $("#mails-success-report-modal").modal('show');
                 }
@@ -74,7 +74,7 @@ $(document).ready(function(){
                 }
             },
             "error": function(data){
-                $('#mails-processing-modal').modal('hide');
+                //$('#mails-processing-modal').modal('hide');
                 if(data.responseJSON.errorData){
                     $("#misc-error-msg-data-for-mail").text(data.responseJSON.errorData.errorCode + ":" + data.responseJSON.errorData.errorMsg)
                 }

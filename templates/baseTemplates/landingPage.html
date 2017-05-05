@@ -1,0 +1,27 @@
+{#<ul class="pull-left">#}
+{#        <li style="list-style: none"><a class="btn btn-lg btn-primary btn-block" style="text-align: right;">Manage Account</a></li>#}
+{#        <li style="list-style: none"><a class="btn btn-lg btn-primary btn-block" href="{% url 'dashboard-page' %}" style="text-align: right;">Go to dashboard</a></li>#}
+{#</ul>#}
+{% extends 'baseTemplates/base.html' %}
+{% load staticfiles %}
+{% block project_content %}
+    <div class="landing-page-entry-div card-overlay">
+        <div class=" white-text text-center">
+{#            <h3 class="landing-page-welcome-tile medium-content">Welcome to customfurnish HR portal</h3>#}
+            {% if request.user.username %}
+                <div class="row text-center landing-page-button-sections">
+                    <a class="btn btn-lg btn-outline-white" href="{% url 'dashboard-page' %}"><i class="fa fa-clone left"></i> View Dashboard</a>
+                    <a class="btn btn-lg btn-outline-white"><i class="fa fa-clone left"></i> Manage Profile</a>
+                </div>
+                {% else %}
+                 <div class="row text-center landing-page-login-button-sections bold-content">
+                    <a class="btn btn-lg btn-outline-warning" href="{% url 'sign-in' %}"><i class="fa fa-sign-in left"></i> LOG-IN AS HR</a>
+{#                    <a class="btn btn-lg btn-outline-warning" href="{% url 'sign-up' %}"><i class="fa fa-user-circle left"></i> SIGN-UP</a>#}
+                </div>
+            {% endif %}
+            <div class="row landing-page-footer-section">
+                <footer class="text-center">All Rights Reserved @ HINSHITSU MANUFACTURING PVT LTD.</footer>
+            </div>
+        </div>
+    </div>
+{% endblock project_content %}

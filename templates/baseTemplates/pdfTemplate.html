@@ -27,8 +27,7 @@
 <body style="font-family: 'Roboto', sans-serif;">
 <div style="width: 950px;">
     <div style="">
-        {#        <img src="{% static 'img/custom-furnish.png' %}" style="margin-left:20px;float: left">#}
-{#        <img src="http://d3cc34wxvev8pg.cloudfront.net/static/images/miscellaneous/custom-furnish.png" style="margin-left:20px;float: left">#}
+        <img src="http://d3cc34wxvev8pg.cloudfront.net/static/images/miscellaneous/custom-furnish.png" style="margin-left:20px;float: left">
         <h3 style="margin-left: 300px;">{{ companyDetails.NameOfTheOrganization }}</h3>
         <p style="margin-left: 300px; text-align: justify;">{{ companyDetails.AddressOfTheOrganization }}</p>
     </div>
@@ -52,25 +51,25 @@
                 <td>Designation:</td>
                 <td>{{ paySlipData.basicDetails|getValue:"designation" }}</td>
                 <td>Bank Name:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"bank Name" }}</td>
+                <td>{{ paySlipData.basicDetails|getValue:"bank name" }}</td>
             </tr>
             <tr>
                 <td>Department:</td>
                 <td>{{ paySlipData.basicDetails|getValue:"department"}}</td>
                 <td>Bank Acc No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"bankAccNo"}}</td>
+                <td>{{ paySlipData.basicDetails|getValue:"bank account number"}}</td>
             </tr>
             <tr>
                 <td>Location:</td>
                 <td>{{ paySlipData.basicDetails|getValue:"location"}}</td>
                 <td>PAN No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"panNo"}}</td>
+                <td>{{ paySlipData.basicDetails|getValue:"pan number"}}</td>
             </tr>
             <tr>
                 <td>Effective Work Days:</td>
                 <td>{{ paySlipData.basicDetails|getValue:"effectiveWorkDays"}}</td>
                 <td>PPF No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"ppfNo"}}</td>
+                <td>{{ paySlipData.basicDetails|getValue:"ppf number"}}</td>
             </tr>
         </table>
     </div>

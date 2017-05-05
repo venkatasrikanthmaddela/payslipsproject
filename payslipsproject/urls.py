@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 import dashboardManagement
-from payslipsproject.views import HomePage, SignInPage, EmailPage
+from payslipsproject.views import HomePage, SignInPage, EmailPage, LandingPage, SignUpPage
 
 admin.autodiscover()
 
@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'ops-hr/api/', include('hrOperations.api_urls')),
     url(r'ops-hr/', include('hrOperations.urls')),
     url(r'test-template', EmailPage.as_view()),
-    url(r'', SignInPage.as_view(), name='home'),
+    url(r'^sign-in$', SignInPage.as_view(), name="sign-in"),
+    url(r'^sign-up$', SignUpPage.as_view(), name="sign-up"),
+    url(r'', LandingPage.as_view(), name='home')
 ]

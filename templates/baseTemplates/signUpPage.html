@@ -1,0 +1,51 @@
+{% extends 'baseTemplates/base.html' %}
+{% block project_content %}
+    <div class="container set-height">
+        <div class="row">
+            <div class="col-lg-6 push-3">
+                <!--Form with header-->
+                <div class="card">
+                    <div class="card-block">
+
+                        <!--Header-->
+                        <!--Body-->
+                        <form id="signUpForm">
+                            <div class="form-header unique-color">
+                                <h3><i class="fa fa-user"></i> Register Here</h3>
+                            </div>
+                            <div class="md-form">
+                                <i class="fa fa-user prefix"></i>
+                                <input type="text" id="user-name" name="userName" placeholder="your name" class="form-control" required>
+                                {#                            <label for="form3">Your name</label>#}
+                            </div>
+                            <div class="md-form">
+                                <i class="fa fa-envelope prefix"></i>
+                                <input type="email" id="email-id" name="emailId" placeholder="your email" class="form-control" required>
+                                {#                            <label for="form2">Your email</label>#}
+                            </div>
+
+                            <div class="md-form">
+                                <i class="fa fa-lock prefix"></i>
+                                <input type="password" id="password" name="password" placeholder="enter password" class="form-control" required>
+                                {#                            <label for="form4">Your password</label>#}
+                            </div>
+
+                            <div class="text-center">
+                                <a class="btn btn-indigo sign-up primary-color" data-form-id="signUpForm">Sign up</a>
+                                <hr>
+                                <fieldset class="form-group">
+                                    <input type="checkbox" id="checkbox1">
+                                    <label for="checkbox1">Subscribe me to the newsletter</label>
+                                </fieldset>
+                            </div>
+                        </form>
+
+
+                    </div>
+                </div>
+                <!--/Form with header-->
+
+            </div>
+        </div>
+    </div>
+{% endblock project_content %}
