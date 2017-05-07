@@ -1,18 +1,19 @@
 {% extends 'baseTemplates/base.html' %}
 {% load custom_filters %}
 {% block project_content %}
-    <div class="row" style="margin-top:100px;">
-        {% for upload_session, upload_data in completePaySlipsData.items%}
-            <div class="col-lg-12">
+    <div class="row" style="margin-top: 100px;">
+        <div class="col-10 push-1">
+            <a class="btn btn-default" style="margin-left: 850px;">Export Logs</a>
+            {% for upload_session, upload_data in completePaySlipsData.items%}
                 <table class="table">
                     <thead class="grey">
                     <tr>
-                        <th colspan="2" class="text-center">{{ upload_session|convertTimeToLocal }}</th>
+                        <th colspan="2" class="text-center">Uploaded Time : {{ upload_session|convertTimeToLocal }}</th>
                         <th colspan="2" class="text-center">No of records : {{ upload_data|length }}</th>
                     </tr>
                     </thead>
                     <thead>
-                    <tr>
+                    <tr class="small">
                         <th>Employee Name</th>
                         <th>Employee Email-id</th>
                         <th>Uploaded Date</th>
@@ -30,7 +31,7 @@
                     {% endfor %}
                     </tbody>
                 </table>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock project_content %}
