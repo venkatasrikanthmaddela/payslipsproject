@@ -1,0 +1,36 @@
+{% extends 'baseTemplates/base.html' %}
+{% load custom_filters %}
+{% block project_content %}
+    <div class="row" style="margin-top:100px;">
+        {% for upload_session, upload_data in completePaySlipsData.items%}
+            <div class="col-lg-12">
+                <table class="table">
+                    <thead class="grey">
+                    <tr>
+                        <th colspan="2" class="text-center">{{ upload_session|convertTimeToLocal }}</th>
+                        <th colspan="2" class="text-center">No of records : {{ upload_data|length }}</th>
+                    </tr>
+                    </thead>
+                    <thead>
+                    <tr>
+                        <th>Employee Name</th>
+                        <th>Employee Email-id</th>
+                        <th>Uploaded Date</th>
+                        <th>Department</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for each_payslip_info in upload_data %}
+                        <tr class="small">
+                            <td>{{ each_payslip_info.employeeName }}</td>
+                            <td>{{ each_payslip_info.emailId }}</td>
+                            <td>{{ each_payslip_info.uploadedDate }}</td>
+                            <td>{{ each_payslip_info.department }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock project_content %}

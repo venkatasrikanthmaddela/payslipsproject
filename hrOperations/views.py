@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 
+from hrOperations.models import PaySlipUploads, PaySlipInfo
 from payslipsproject.constants import PAYSLIPS_UPLOAD_FORMAT_VERSION, PAYSLIPS_UPLOAD_FORMAT, \
     PAYSLIPS_UPLOAD_TUPLE_FORMAT
 
@@ -20,6 +21,12 @@ class BulkPaySlipsPage(View):
         return render(request, "hrOperations/sendPayslipsInBulk.html", {"request":request})
 
 
+class PayslipsDashboardPage(View):
+    def get(self,request):
+        complete_payslips_data = get_all_payslips_data()
+        return render(request, "hrOperations/paySlipsDashboard.html", {"request": request, "completePaySlipsData":complete_payslips_data})
+
+
 class BulkPaySlipsFormat(View):
     def get(self, request):
         # data = PAYSLIPS_UPLOAD_FORMAT[PAYSLIPS_UPLOAD_FORMAT_VERSION[-1]]
@@ -33,3 +40,15 @@ class BulkPaySlipsFormat(View):
         response['Content-Disposition'] = 'attachment; filename=payslip-upload-template.xls'
         workbook.save(response)
         return response
+
+def get_all_payslips_data():
+    all_payslips_uploads = dict()
+    all_uploads = PaySlipUploads.objects.all()
+    all_payslip_entries = PaySlipInfo.objects.all()
+    if all_uploads:
+        for each_upload_info in all_uploads:
+            all_payslips_uploads[each_upload_info.uploadedAt] = list()
+        for each_payslip_entry in all_payslip_entries:
+            if each_payslip_entry.createdAt in all_payslips_uploads.keys():
+                all_payslips_uploads[each_payslip_entry.createdAt].append(each_payslip_entry)
+    return all_payslips_uploads
