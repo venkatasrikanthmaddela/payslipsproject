@@ -89,3 +89,34 @@ function checklogin(){
     };
 
 }(window.hrmutils.myAccount = window.hrmutils.myAccount || {}, jQuery));
+
+
+function showProcessingModal(heading, message){
+    $("#processingModalHeading").text(heading);
+    $("#processingModalMessage").text(message);
+    $("#processingModal").modal({backdrop: 'static', keyboard: false}, 'show');
+}
+
+function showErrorModal(heading, message){
+    $("#errorModalHeading").text(heading);
+    $("#errorModalMessage").text(message);
+    $("#errorModal").modal('show');
+}
+
+function showSuccessModal(heading, message){
+    $("#successModalHeading").text(heading);
+    $("#successModalMessage").text(message);
+    $("#successModal").modal({backdrop: 'static', keyboard: false}, 'show')
+}
+
+function closeProcessingModal(){
+    $("#processingModal").modal('hide');
+}
+
+function closeSuccessModal(){
+    $("#successModal").modal('hide');
+}
+
+function closeErrorModal(){
+    $("#errorModal").modal('hide');
+}

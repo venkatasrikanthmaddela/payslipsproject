@@ -3,6 +3,7 @@ import pytz
 from datetime import datetime
 from datetime import timedelta
 
+from payslipsproject.constants import MONTHS
 from payslipsproject.settings import ACTUAL_BASE_PATH
 
 __author__ = 'oliverqueen'
@@ -23,6 +24,10 @@ def get_static_path(url):
 def get_pay_slip_date(value):
     today_date = datetime.now().date().strftime('%B, %Y')
     return today_date
+
+@register.filter(name="getPaySlipMonth")
+def get_pay_slip_month(value):
+    return MONTHS.get(str(value))
 
 @register.filter(name="getValue")
 def get_key_value_from_dict(input_dict, key):

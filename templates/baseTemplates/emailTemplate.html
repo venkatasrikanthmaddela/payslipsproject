@@ -10,9 +10,9 @@
 </head>
 <body style="font-family: 'Roboto', sans-serif;">
 <div style="width: 950px;">
-    <h3 style="text-align: center;">Payslip for the month of {{ "currentMonth"|getPaySlipDate }}</h3>
-    <p>Hi, {{ paySlipData.basicDetails|getValue:"employee name" }}</p>
-    <p>Your payslip for the month of {{ "currentMonth"|getPaySlipDate }} is generated successfully. please find the attached document for your payslip.</p>
+        <h3 style="text-align: center;">Payslip for the month of {{ paySlipData.month|getPaySlipMonth }}, {{ paySlipData.year }}</h3>
+    <p>Hi, {{ paySlipData.employeeName }}</p>
+    <p>Your payslip for the month of {{  paySlipData.month|getPaySlipMonth }} is generated successfully. please find the attached document for your payslip.</p>
 </div>
 <footer style="margin-top: 50px;">
     <address>

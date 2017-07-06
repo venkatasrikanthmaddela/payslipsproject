@@ -75,6 +75,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'payslipsproject.wsgi.application'
 
+TEMPLATE_DEBUG=True
+
 # TEMPLATE_DIRS = (
 #     os.path.join(BASE_DIR, "templates"),
 # )

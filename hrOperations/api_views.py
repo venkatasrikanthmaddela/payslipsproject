@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import pdfkit
 
+
 class PayslipGeneration(APIView):
     def post(self, request):
         input_excel = request.FILES['paySlipsFile']
@@ -16,8 +17,8 @@ class PayslipGeneration(APIView):
         if not extracted_data:
             return Response({"result":"error", "errorData": {"errorCode": BULK_IMPORT_ERROR_SCHEMA.get("SHEET EMPTY"),
                                                              "errorMsg": BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("SHEET EMPTY"))
-                                                            }
-                            },500)
+                                                             }
+                             },500)
         else:
             validation_report = ExcelOperations(input_excel).validate_excel_data(extracted_data)
             if validation_report["result"]:
@@ -25,11 +26,14 @@ class PayslipGeneration(APIView):
             else:
                 return Response({"result":"success", "jsonData": extracted_data}, 200)
 
+
 class SendPaySlipsInBulk(APIView):
     def post(self, request):
         extraced_data = request.data
         pay_slip_ops_object = PaySlipEmailOps(extraced_data)
         result_info = pay_slip_ops_object.check_for_unique_entries()
+        if len(result_info.get("alreadySentUsers")) == len(extraced_data):
+            return Response({"result": "error", "errorData": {"errorCode": "emails already sent to ", "errorMsg": result_info.get("alreadySentUsers")}}, 500)
         filtered_data = pay_slip_ops_object.push_data_to_send_emails(result_info, extraced_data)
         mail_limit_report = pay_slip_ops_object.check_for_mail_limit(filtered_data)
         if mail_limit_report.get("result"):
@@ -42,9 +46,15 @@ class SendPaySlipsInBulk(APIView):
 
 class ProcessEmails(APIView):
     def post(self, request):
-        email_status = EmailWorkerOps([], request).send_emails_to_the_users(request.data)
-        if email_status.get("errorResult"):
-            return Response({"result":"error", "errorData":email_status.get("errorResult")}, 500)
-        else:
-            UpdateInDb(request.data, request).initiate_data_to_upload()
-            return Response({"result":"success"}, 200)
+        try:
+            uploaded_data = UpdateInDb(request.data, request).initiate_data_to_upload()
+            for each_uploaded_data in uploaded_data:
+                email_worker_ops = EmailWorkerOps([], request)
+                email_body_data = email_worker_ops.prepare_html_data_from_db_data(each_uploaded_data)
+                email_status = email_worker_ops.send_emails_to_the_users(email_body_data)
+                if email_status.get("errorResult"):
+                    return Response({"result": "error", "errorData": email_status.get("errorResult")}, 500)
+            return Response({"result": "success"}, 200)
+        except Exception as e:
+            print "Sending mails failed due to.." + str(e.message)
+            return Response({"result": "error"}, 500)

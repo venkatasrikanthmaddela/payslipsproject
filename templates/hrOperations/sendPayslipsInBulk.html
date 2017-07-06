@@ -1,18 +1,43 @@
 {% extends 'baseTemplates/base.html' %}
 {% block project_content %}
-     <div class="container">
-        <div class="row" style="margin-top: 150px;">
-            <h4><a href="{% url 'dashboard-page' %}">Back to Dashboard</a></h4>
-            <div class="col-lg-6 col-md-offset-3">
-                <form id="bulk-payslips-upload-form">
-                    <label for="userUpload">Select your file here</label>
-                    <input type="file" name="paySlipsFile" id="pay-slips-file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
-                    <a class="btn btn-lg btn-default upload-payslips-in-bulk" data-id="bulk-payslips-upload-form">Send Payslips</a>
-                </form>
+    <div class="container" style="margin-top: 100px;">
+        <div class="row">
+            <h3><a href="{% url 'dashboard-page' %}">Back to dashboard</a></h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header elegant-color text-center white-text">
+                        <h5>Send bulk payslips</h5>
+                    </div>
+                    <div class="card-block">
+                        <form id="bulk-payslips-upload-form">
+                            <label for="userUpload">Select your file here</label>
+                            <input type="file" name="paySlipsFile" id="pay-slips-file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                            <div class="text-center">
+                                <a class="btn btn-lg btn-default upload-payslips-in-bulk" data-id="bulk-payslips-upload-form">Send Payslips</a>
+                            </div>
+                        </form>
+                        <p><a href="{% url 'export-sample-format' %}">Click here</a> to download the sample upload document</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card">
+                    <h5 class="card-header elegant-color white-text text-center">Today's email count</h5>
+                    <div class="card-block">
+                        <div class="text-center">
+                            <h3 class="card-circle" style="margin-left: 180px;">{{ noOfMails }}/100</h3>
+                        </div>
+                    </div>
+                    <div class="card-footer elegant-color">
+                        <p class="text-center white-text">** you can only send 100 emails per day</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row text-center">
-            <p><a href="{% url 'export-sample-format' %}">Click here</a> to download the sample upload document</p>
-        </div>
+
+        <div style="height: 1000px;width: 500px;"></div>
     </div>
 {% endblock project_content %}

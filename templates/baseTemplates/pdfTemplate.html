@@ -5,7 +5,7 @@
 <head lang="en">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-{#    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">#}
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
     <style>
         table {
@@ -22,6 +22,9 @@
         tr:nth-child(even) {
             background-color: #dddddd;
         }
+        .values{
+            text-align:left;
+        }
     </style>
 </head>
 <body style="font-family: 'Roboto', sans-serif;">
@@ -32,8 +35,8 @@
         <p style="margin-left: 300px; text-align: justify;">{{ companyDetails.AddressOfTheOrganization }}</p>
     </div>
     <div>
-{#        <h3 style="text-align: center; margin-top: 80px;">Payslip for the month of {{ "currentMonth"|getPaySlipDate }}</h3>#}
-        <h3 class="text-center">Payslip for the month of {{ "currentMonth"|getPaySlipDate }}</h3>
+        {#        <h3 style="text-align: center; margin-top: 80px;">Payslip for the month of {{ "currentMonth"|getPaySlipDate }}</h3>#}
+        <h3 class="text-center">Payslip for the month of {{ paySlipData.month|getPaySlipMonth}}, {{ paySlipData.year}}</h3>
     </div>
 
     <div style="">
@@ -41,83 +44,176 @@
             <tr>
                 <th colspan="4" style="text-align: center">Employee Basic Details</th>
             </tr>
-            <tr>
+            <tr>l
                 <td>Name:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"employee name" }}</td>
+                <td>{{ paySlipData.employeeName }}</td>
                 <td>Employee No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"employee number" }}</td>
+                <td>{{ paySlipData.employeeNumber }}</td>
             </tr>
             <tr>
                 <td>Designation:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"designation" }}</td>
+                <td>{{ paySlipData.designation}}</td>
                 <td>Bank Name:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"bank name" }}</td>
+                <td>{{ paySlipData.bankName}}</td>
             </tr>
             <tr>
                 <td>Department:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"department"}}</td>
+                <td>{{ paySlipData.department}}</td>
                 <td>Bank Acc No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"bank account number"}}</td>
+                <td>{{ paySlipData.bankAccountNumber}}</td>
             </tr>
             <tr>
                 <td>Location:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"location"}}</td>
-                <td>PAN No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"pan number"}}</td>
+                <td>{{ paySlipData.location}}</td>
+                <td>UAN No:</td>
+                <td>{{ paySlipData.panNumber}}</td>
             </tr>
             <tr>
                 <td>Effective Work Days:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"effectiveWorkDays"}}</td>
-                <td>PPF No:</td>
-                <td>{{ paySlipData.basicDetails|getValue:"ppf number"}}</td>
+                <td>{{ paySlipData.effectiveWorkDays}}</td>
+                <td>ESI No:</td>
+                <td>{{ paySlipData.ppfNumber}}</td>
             </tr>
         </table>
     </div>
 
     <div style="margin-top: 50px;">
-        <table style="float: left;">
+        <table style="width:100%">
             <tr>
                 <th colspan="2" style="text-align: center">Earnings(IN INR)</th>
-            </tr>
-            {% for key, value in paySlipData.grossEarnings.items %}
-                <tr style="background-color:white;">
-                    <td>{{ key|upper }}</td>
-                    <td>{{ value }}</td>
-                <tr>
-            {% endfor %}
-            <tr style="background-color: #dddddd;">
-                <td><b>TOTAL EARNINGS(Rs)</b></td>
-                <td><b>{{ paySlipData.totalEarnings }}</b></td>
-            </tr>
-        </table>
-        <table style="">
-            <tr>
+                <th colspan="1" style="text-align: center">Actual Earnings(IN INR)</th>
                 <th colspan="2" style="text-align: center">Deductions(IN INR)</th>
             </tr>
-            {% for key, value in paySlipData.deductions.items %}
+            <tr style="background-color:white;">
+                <td>Basic & DA</td>
+                <td>{{ paySlipData.basic }}</td>
+                <td class="values">{{ paySlipData.earnedBasicAndDa }}</td>
+                <td>ESI</td>
+                <td class="values">{{ paySlipData.esi }}</td>
+            </tr>
+            <tr style="background-color:white;">
+                <td>House Rent Allowance</td>
+                <td>{{ paySlipData.hra }}</td>
+                <td>{{ paySlipData.earnedHouseRentAllowance }}</td>
+                <td>Prof. Tax</td>
+                <td class="values">{{ paySlipData.professionalTax }}</td>
+            <tr>
+            <tr style="background-color:white;">
+                <td>Conveyance</td>
+                <td>{{ paySlipData.conveyance }}</td>
+                <td>{{ paySlipData.earnedConveyance }}</td>
+                <td>Income Tax</td>
+                <td class="values">{{ paySlipData.incomeTax }}</td>
+            <tr>
+
+            <tr style="background-color:white;">
+                <td>Special Allowance</td>
+                <td>{{ paySlipData.specialAllowance }}</td>
+                <td>{{ paySlipData.earnedSpecialAllowance }}</td>
+                <td>Salary Advance</td>
+                <td class="values">{{ paySlipData.salaryAdvance }}</td>
+            <tr>
+
+            <tr style="background-color:white;">
+                <td>OT</td>
+                <td>{{ paySlipData.ot }}</td>
+                <td>{{ paySlipData.earnedOt }}</td>
+                <td>CUG</td>
+                <td class="values">{{ paySlipData.cug }}</td>
+            <tr>
+
+            <tr style="background-color:white;">
+                <td>Leave Travel Allowance</td>
+                <td>{{ paySlipData.lta }}</td>
+                <td>{{ paySlipData.earnedLeaveTravelAllowance }}</td>
+                <td>Arrears PF Deduction</td>
+                <td class="values">{{ paySlipData.arrearsPFDeduction }}</td>
+            <tr>
+
+            <tr style="background-color:white;">
+                <td>Other Deduction Reimbt</td>
+                <td>{{ paySlipData.odr }}</td>
+                <td>{{ paySlipData.earnedOtherDeductionReimbt }}</td>
+                <td>Other deductions</td>
+                <td class="values">{{ paySlipData.otherDeductions }}</td>
+            <tr>
+
+            <tr style="background-color:white;">
+                <td>Education Allowance</td>
+                <td>{{ paySlipData.educationAllowance }}</td>
+                <td>{{ paySlipData.earnedEduAllow }}</td>
+                <td></td>
+                <td></td>
+            <tr>
+
+            <tr style="background-color:white;">
+                <td>Medical Allowance</td>
+                <td>{{ paySlipData.medicalAllowance }}</td>
+                <td>{{ paySlipData.earnedMedAllowance }}</td>
+                 <td></td>
+                <td></td>
+            <tr>
+
+            {% if paySlipData.houseMaintenance != "" or paySlipData.earnedHouseMaintenance != "" %}
                 <tr style="background-color:white;">
-                    <td>{{ key|upper }}</td>
-                    <td>{{ value }}</td>
+                        <td>House Maintenance</td>
+                        <td>{{ paySlipData.houseMaintenance }}</td>
+                        <td>{{ paySlipData.earnedHouseMaintenance }}</td>
+                        <td></td>
+                        <td></td>
                 <tr>
-            {% endfor %}
+            {% endif %}
+
+            {% if paySlipData.driverSalary != "" or paySlipData.earnedDriverSalary != "" %}
+            <tr style="background-color:white;">
+                    <td>Driver Salary</td>
+                    <td>{{ paySlipData.driverSalary }}</td>
+                    <td>{{ paySlipData.earnedDriverSalary }}</td>
+                     <td></td>
+                    <td></td>
+            <tr>
+            {% endif %}
+
+            {% if paySlipData.carMaintenance != "" or paySlipData.earnedCarMaintenance != "" %}
+            <tr style="background-color:white;">
+                    <td>Car Maintenance</td>
+                    <td>{{ paySlipData.carMaintenance }}</td>
+                    <td>{{ paySlipData.earnedCarMaintenance }}</td>
+                     <td></td>
+                    <td></td>
+            <tr>
+            {% endif %}
+
+            {% if paySlipData.fuelReimbursement != "" or paySlipData.earnedFuelReimbursement != "" %}
+            <tr style="background-color:white;">
+                <td>Fuel Reimbursement</td>
+                <td>{{ paySlipData.fuelReimbursement }}</td>
+                <td>{{ paySlipData.earnedFuelReimbursement }}</td>
+                 <td></td>
+                <td></td>
+            <tr>
+            {% endif %}
+
+             {% if paySlipData.incentives != "" or paySlipData.earnedIncentives != "" %}
+            <tr style="background-color:white;">
+                <td>Incentives</td>
+                <td>{{ paySlipData.incentives }}</td>
+                <td>{{ paySlipData.earnedIncentives }}</td>
+                <td></td>
+                <td></td>
+            <tr>
+            {% endif %}
+
             <tr style="background-color: #dddddd;">
+                <td><b>TOTAL GROSS EARNINGS(Rs)</b></td>
+                <td><b>{{ paySlipData.actualGrossEarnings }}</b></td>
+                <td><b>{{ paySlipData.grossEarnings }}</b></td>
                 <td><b>TOTAL DEDUCTIONS(Rs)</b></td>
-                <td><b>{{ paySlipData.totalDeductions }}</b></td>
+                <td class="values"><b>{{ paySlipData.totalDeduction }}</b></td>
             </tr>
         </table>
     </div>
-    <div>
-        <table style="float:left;">
-            <tr>
-                <td colspan="2" style="text-align: center"><b>TOTAL NET PAY(Rs)</b></td>
-            </tr>
-        </table>
-        <table>
-            <tr>
-                <td colspan="2" style="text-align: right;"><b>{{ paySlipData.totalNetPay }}</b></td>
-            </tr>
-        </table>
-    </div>
+    <hr>
     <div>
         <p><b>Total net pay is {{ paySlipData.totalNetPay }} Rs. ({{ paySlipData.totalNetPay|convertToWords }})</b></p>
     </div>

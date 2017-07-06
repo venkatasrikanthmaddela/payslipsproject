@@ -1,13 +1,15 @@
 from collections import Counter
 import re
 from datetime import datetime
+from django.core import serializers
 from django.shortcuts import render_to_response
 from django.template import RequestContext, Context
 from django.template.loader import render_to_string, get_template
 # import pdfkit
 from hrOperations.models import PaySlipInfo, smtpStatus
 from payslipsproject.constants import MANDATORY_FIELDS_FOR_PAYSLIP, BULK_IMPORT_ERROR_SCHEMA, BULK_IMPORT_ERROR_CODES, \
-    PAYSLIPS_UPLOAD_FORMAT, PAYSLIPS_UPLOAD_FORMAT_VERSION, DEDUCTION_FIELDS, EARNING_FIELDS, COMPANY_DETAILS
+    PAYSLIPS_UPLOAD_FORMAT, PAYSLIPS_UPLOAD_FORMAT_VERSION, DEDUCTION_FIELDS, EARNING_FIELDS, COMPANY_DETAILS, \
+    ACTUAL_EARNING_FIELDS
 from payslipsproject.settings import STATIC_CDN_URL, SMTP_MAIL_LIMIT
 import requests
 
@@ -84,6 +86,7 @@ class ExcelOperations():
         for each_record in excel_data_as_json:
             for key, value in each_record.items():
                 if key in MANDATORY_FIELDS_FOR_PAYSLIP and not value:
+                    print key
                     self.validation_report["result"] = {"errorCode": BULK_IMPORT_ERROR_SCHEMA.get("DATA MISSING"),
                                                         "errorMsg": BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("DATA MISSING"))
                                                         }
@@ -141,27 +144,44 @@ class PaySlipEmailOps():
 
 
 def get_html_string(data_dict, request):
-    pay_slip_data = calculate_pay_slip(data_dict)
-    html_safe_string = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
-    pdf_string = render_to_string('baseTemplates/pdfTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
+    # html_safe_string = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
+    # pdf_string = render_to_string('baseTemplates/pdfTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
+    html_safe_string = ""
+    pdf_string = ""
     return html_safe_string, pdf_string
 
+
+def get_html_string_from_db(model_data, request):
+    mail_body_data = {}
+    mail_body_data["htmlString"] = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":model_data, "request":request}))
+    mail_body_data["pdfString"] = render_to_string('baseTemplates/pdfTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":model_data, "request":request}))
+    return mail_body_data
+
+
+
 def calculate_pay_slip(data_dict):
-    pay_slip_struct = dict(deductions=dict(), grossEarnings=dict(), totalDeductions="", totalEarnings="", totalNetPay="", basicDetails=dict())
+    pay_slip_struct = dict(deductions=dict(), grossEarnings=dict(), totalDeductions="", totalEarnings="", totalNetPay="", basicDetails=dict(), actualGrossEarnings=dict())
     deductions_list = []
     earnings_list = []
-    for key , value in data_dict.items():
-        if key.lower() in DEDUCTION_FIELDS:
+    actual_earnings_list = []
+    for key, value in data_dict.items():
+        if key.lower() in DEDUCTION_FIELDS and value:
             pay_slip_struct["deductions"].update({key:value})
             deductions_list.append(value)
         elif key.lower() in EARNING_FIELDS:
-            pay_slip_struct["grossEarnings"].update({key:value})
-            earnings_list.append(value)
+            if value:
+                pay_slip_struct["grossEarnings"].update({key : value})
+                earnings_list.append(value)
+        elif key.lower() in ACTUAL_EARNING_FIELDS:
+            if value:
+                pay_slip_struct["actualGrossEarnings"].update({key: value})
+                actual_earnings_list.append(value)
         else:
-            pay_slip_struct["basicDetails"].update({key:value})
+            pay_slip_struct["basicDetails"].update({key: value})
     pay_slip_struct["totalDeductions"] = sum(deductions_list)
-    pay_slip_struct["totalEarnings"] = sum(earnings_list)
-    pay_slip_struct["totalNetPay"] = sum(earnings_list)-sum(deductions_list)
+    pay_slip_struct["grossEarnings"] = sum(earnings_list)
+    pay_slip_struct["actualGrossEarnings"] = sum(actual_earnings_list)
+    pay_slip_struct["totalNetPay"] = sum(actual_earnings_list)-sum(deductions_list)
     return pay_slip_struct
 
 

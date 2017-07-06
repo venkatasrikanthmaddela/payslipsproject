@@ -1,10 +1,13 @@
 import json
 
+import operator
+
+from datetime import datetime
 from django.http import HttpResponse
 from django.forms.models import model_to_dict
-from hrOperations.models import PaySlipUploads, PaySlipInfo
+from hrOperations.models import PaySlipUploads, PaySlipInfo, smtpStatus
 from payslipsproject.constants import PAYSLIPS_UPLOAD_FORMAT_VERSION, PAYSLIPS_UPLOAD_FORMAT, \
-    PAYSLIPS_UPLOAD_TUPLE_FORMAT
+    PAYSLIPS_UPLOAD_TUPLE_FORMAT, SAMPLE_DATA
 
 __author__ = 'oliverqueen'
 import xlwt
@@ -20,7 +23,8 @@ class BulkUploadUserPage(View):
 
 class BulkPaySlipsPage(View):
     def get(self, request):
-        return render(request, "hrOperations/sendPayslipsInBulk.html", {"request":request})
+        no_of_mails =smtpStatus.objects.get(date=datetime.now().date()).noOfMails
+        return render(request, "hrOperations/sendPayslipsInBulk.html", {"request":request, "noOfMails":no_of_mails})
 
 
 class PayslipsDashboardPage(View):
@@ -36,8 +40,13 @@ class BulkPaySlipsFormat(View):
         workbook = xlwt.Workbook()
         sheet = workbook.add_sheet('sampleDataSheet')
         data = OrderedDict((value, True) for value in data)
+        sample_entry = OrderedDict((value, True) for value in SAMPLE_DATA)
+        print data
+        print sample_entry
         for index, value in enumerate(data):
             sheet.write(0, index, value)
+        for index, value in enumerate(sample_entry):
+            sheet.write(1, index, value)
         response = HttpResponse(content_type='application/vnd.ms-excel')
         response['Content-Disposition'] = 'attachment; filename=payslip-upload-template.xls'
         workbook.save(response)
@@ -68,7 +77,7 @@ class BulkExportPayslips(View):
 
 def get_all_payslips_data():
     all_payslips_uploads = dict()
-    all_uploads = PaySlipUploads.objects.all()
+    all_uploads = PaySlipUploads.objects.all().order_by('uploadedAt')
     all_payslip_entries = PaySlipInfo.objects.all()
     if all_uploads:
         for each_upload_info in all_uploads:
@@ -76,4 +85,5 @@ def get_all_payslips_data():
         for each_payslip_entry in all_payslip_entries:
             if each_payslip_entry.createdAt in all_payslips_uploads.keys():
                 all_payslips_uploads[each_payslip_entry.createdAt].append(each_payslip_entry)
+        all_payslips_uploads = OrderedDict(sorted(all_payslips_uploads.items(), reverse=True))
     return all_payslips_uploads
