@@ -23,7 +23,10 @@ class BulkUploadUserPage(View):
 
 class BulkPaySlipsPage(View):
     def get(self, request):
-        no_of_mails =smtpStatus.objects.get(date=datetime.now().date()).noOfMails
+        try:
+            no_of_mails =smtpStatus.objects.get(date=datetime.now().date()).noOfMails
+        except:
+            no_of_mails = 0
         return render(request, "hrOperations/sendPayslipsInBulk.html", {"request":request, "noOfMails":no_of_mails})
 
 
