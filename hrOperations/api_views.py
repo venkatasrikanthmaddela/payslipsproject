@@ -47,13 +47,17 @@ class SendPaySlipsInBulk(APIView):
 class ProcessEmails(APIView):
     def post(self, request):
         try:
-            uploaded_data = UpdateInDb(request.data, request).initiate_data_to_upload()
+            initialize_db = UpdateInDb(request.data, request)
+            uploaded_data = initialize_db.initiate_data_to_upload()
             for each_uploaded_data in uploaded_data:
                 email_worker_ops = EmailWorkerOps([], request)
                 email_body_data = email_worker_ops.prepare_html_data_from_db_data(each_uploaded_data)
                 email_status = email_worker_ops.send_emails_to_the_users(email_body_data)
                 if email_status.get("errorResult"):
                     return Response({"result": "error", "errorData": email_status.get("errorResult")}, 500)
+                else:
+                    each_uploaded_data.emailStatus = True
+                    initialize_db.update_smtp_status()
             return Response({"result": "success"}, 200)
         except Exception as e:
             print "Sending mails failed due to.." + str(e.message)

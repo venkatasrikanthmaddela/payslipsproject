@@ -32,11 +32,15 @@ class EmailWorkerOps():
 
 
     def send_emails_to_the_users(self, user_content):
-        if is_network_available():
-            pdf = pdfkit.from_string(str(user_content.get("pdfString")), "")
-            email_result = send_mail("Payslip for the month " + MONTHS.get(str(self.model_data.month)), user_content.get("htmlString"), self.model_data.emailId, pdf)
-            self.mail_status_list["mailResultList"].append(email_result)
-        else:
-            self.mail_status_list["errorResult"] = {"errorCode":BULK_IMPORT_ERROR_SCHEMA.get("INTERNET CONNECTION"),
+        try:
+            if is_network_available():
+                pdf = pdfkit.from_string(str(user_content.get("pdfString")), "")
+                email_result = send_mail("Payslip for the month " + MONTHS.get(str(self.model_data.month)), user_content.get("htmlString"), self.model_data.emailId, pdf)
+                self.mail_status_list["mailResultList"].append(email_result)
+            else:
+                 self.mail_status_list["errorResult"] = {"errorCode":BULK_IMPORT_ERROR_SCHEMA.get("INTERNET CONNECTION"),
                                                     "errorMsg":BULK_IMPORT_ERROR_CODES.get(BULK_IMPORT_ERROR_SCHEMA.get("INTERNET CONNECTION"))}
-        return self.mail_status_list
+            return self.mail_status_list
+        except Exception as e:
+            self.mail_status_list["errorResult"] = {"errorCode": "500", "errorMsg": str(e.message)}
+            return self.mail_status_list

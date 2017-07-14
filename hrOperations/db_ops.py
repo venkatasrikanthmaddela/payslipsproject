@@ -12,17 +12,17 @@ class UpdateInDb():
 
     def initiate_data_to_upload(self):
         if self.user_data:
-            pay_slip_data_object= PaySlipUploads(uploadedAt=datetime.now(), uploadedUser=self.request.user.email, noOfRecords=len(self.user_data))
+            pay_slip_data_object = PaySlipUploads(uploadedAt=datetime.now(), uploadedUser=self.request.user.email, noOfRecords=len(self.user_data))
             pay_slip_data_object.save()
-            self.update_smtp_status()
             return self.save_db_entries(pay_slip_data_object)
 
     def update_smtp_status(self):
         try:
             mail_status_register = smtpStatus.objects.get(date=datetime.now().date())
-            mail_status_register.noOfMails +=len(self.user_data)
+            mail_status_register.noOfMails +=1
+            mail_status_register.save()
         except smtpStatus.DoesNotExist:
-            smtp_data_object = smtpStatus(date=datetime.now(), noOfMails=len(self.user_data))
+            smtp_data_object = smtpStatus(date=datetime.now(), noOfMails=1)
             smtp_data_object.save()
 
     def save_db_entries(self, pay_slip_data_object):
