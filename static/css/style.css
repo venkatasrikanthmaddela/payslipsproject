@@ -51,6 +51,9 @@
 .medium-content{
     font-family: RobotoMedium;
 }
+.light-content{
+    font-family: RobotoLight;
+}
 .view {
     height: 100%;
 }
@@ -73,7 +76,7 @@
     background-size: cover;
 }
 .login-form-row{
-    margin-top: 150px;
+    margin-top: inherit;
 }
 .set-height{
     margin-top: 100px;
@@ -92,5 +95,5 @@
     margin-top: 500px;
 }
 .landing-page-login-button-sections{
-    margin-top:250px;
+    margin-top:inherit;
 }

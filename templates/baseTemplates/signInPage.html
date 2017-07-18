@@ -1,32 +1,32 @@
 {% extends 'baseTemplates/base.html' %}
 {% load staticfiles %}
 {% block project_content %}
-    <div class="container">
-        <div class="row login-form-row">
-            <div class="col-sm-6 push-3">
-                <!--Form with header-->
+    <div class="container set-height">
+        <div class="row">
+            <div class="col-lg-6 col-sm-12 mx-lg-auto">
                 <div class="card">
                     <div class="card-block">
-
                         <!--Header-->
-                        <div class="form-header  unique-color">
-                            <h3 class="medium-content"><i class="fa fa-lock"></i> HR - Login</h3>
+                        <div class="text-center">
+                            <h3 class="light-content"><i class="fa fa-lock"></i> HR-LOGIN</h3>
+                            <hr class="mt-2 mb-2">
                         </div>
 
                         <!--Body-->
-                        <div class="md-form regular-content">
-                            <i class="fa fa-user prefix"></i>
-                            <input type="text" placeholder="Your username" id="form2" class="form-control user-name-field">
+                        <div class="md-form">
+                            <i class="fa fa-envelope prefix"></i>
+                            <input type="text" id="form2" placeholder="Enter user name " class="form-control user-name-field">
                         </div>
 
-                        <div class="md-form regular-content">
+                        <div class="md-form">
                             <i class="fa fa-lock prefix"></i>
-                            <input type="password" placeholder="Your password" id="form4" class="form-control password-field">
+                            <input type="password" id="form4" placeholder="Enter password" class="form-control password-field">
                         </div>
 
-                        <div class="text-center regular-content">
-                            <a class="btn primary-color admin-login">Login</a>
+                        <div class="text-center">
+                            <a class="btn btn-outline-default text-center admin-login">Login</a>
                         </div>
+
                     </div>
 
                     <!--Footer-->
@@ -38,9 +38,38 @@
                     </div>
 
                 </div>
-                <!--/Form with header-->
-
             </div>
         </div>
     </div>
+    {#        <div class="row">#}
+    {#            <div class="col-lg-8 col-sm-12 align-self-center">#}
+    {#                <!--Form with header-->#}
+    {#                <div class="card">#}
+    {#                    <!--Body-->#}
+    {#                    <div class="md-form regular-content">#}
+    {#                        <i class="fa fa-user prefix"></i>#}
+    {#                        <input type="text" placeholder="Your username" id="form2" class="form-control user-name-field">#}
+    {#                    </div>#}
+    {##}
+    {#                    <div class="md-form regular-content">#}
+    {#                        <i class="fa fa-lock prefix"></i>#}
+    {#                        <input type="password" placeholder="Your password" id="form4" class="form-control password-field">#}
+    {#                    </div>#}
+    {##}
+    {#                    <div class="text-center regular-content">#}
+    {#                        <a class="btn primary-color admin-login">Login</a>#}
+    {#                    </div>#}
+    {##}
+    {#                    <!--Footer-->#}
+    {#                    <div class="modal-footer">#}
+    {#                        <div class="options">#}
+    {#                            <p>Not a member? <a href="#">Sign Up</a></p>#}
+    {#                            <p>Forgot <a href="#">Password?</a></p>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {##}
+    {#                </div>#}
+    {#                <!--/Form with header-->#}
+    {#            </div>#}
+    {#        </div>#}
 {% endblock project_content %}

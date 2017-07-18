@@ -2,7 +2,7 @@
 {% block project_content %}
     <div class="container" style="margin-top: 100px;">
         <div class="row">
-            <h3><a href="{% url 'dashboard-page' %}">Back to dashboard</a></h3>
+            <h3 class="light-content"><a href="{% url 'dashboard-page' %}">Back to dashboard</a></h3>
         </div>
         <div class="row">
             <div class="col-lg-6">
@@ -15,7 +15,7 @@
                             <label for="userUpload">Select your file here</label>
                             <input type="file" name="paySlipsFile" id="pay-slips-file" class="form-control" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
                             <div class="text-center">
-                                <a class="btn btn-lg btn-default upload-payslips-in-bulk" data-id="bulk-payslips-upload-form">Send Payslips</a>
+                                <a class="btn btn-lg btn-outline-default upload-payslips-in-bulk" data-id="bulk-payslips-upload-form">Send Payslips</a>
                             </div>
                         </form>
                         <p><a href="{% url 'export-sample-format' %}">Click here</a> to download the sample upload document</p>
@@ -37,7 +37,10 @@
                 </div>
             </div>
         </div>
-
-        <div style="height: 1000px;width: 500px;"></div>
+        <div class="row set-height">
+            <div class="col-lg-10 align-self-center text-center">
+                <h3><a class="text-center light-content" data-toggle="modal" data-target="#fieldsInfoModal">See Mandatory Fields & Info</a></h3>
+            </div>
+        </div>
     </div>
 {% endblock project_content %}

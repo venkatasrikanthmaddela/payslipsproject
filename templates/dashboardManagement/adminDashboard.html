@@ -2,18 +2,17 @@
 {% block project_content %}
     <div class="container set-height">
         <div class="row">
-            <div class="col">
+            <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card">
                     <i class="fa fa-users fa-4x align-self-center img-fluid card-icon-image" aria-hidden="true"></i>
                     <!--/.Card image-->
 
                     <!--Button-->
-                    <a class="btn-floating btn-action unique-color"><i class="fa fa-chevron-right"></i></a>
 
                     <!--Card content-->
                     <div class="card-block">
                         <!--Title-->
-                        <h4 class="medium-content"><a class="card-title unique-text">Add users in bulk</a></h4>
+                        <a class="card-title unique-text light-content text-center" href="#"><h4>Add users in bulk</h4></a>
                         <hr>
                         <!--Text-->
                         <p class="card-text">you can upload a file which contains all the users information that can be imported directly into the system.</p>
@@ -21,25 +20,22 @@
                     </div>
                     <div class="card-block">
                         <div class="text-center regular-content">
-                            <a class="btn btn-primary">Add Single User</a>
+                            <a class="btn btn-outline-default">Add Single User</a>
                         </div>
                     </div>
                 </div>
-                <!--/.Card-->
-
             </div>
-            <div class="col">
+            <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card">
                     <i class="fa fa-send fa-4x align-self-center img-fluid card-icon-image" aria-hidden="true"></i>
                     <!--/.Card image-->
 
                     <!--Button-->
-                    <a class="btn-floating btn-action unique-color" href="{% url 'user-payslips-upload' %}"><i class="fa fa-chevron-right"></i></a>
 
                     <!--Card content-->
                     <div class="card-block">
                         <!--Title-->
-                        <h4 class="medium-content"><a class="card-title black-text" href="{% url 'user-payslips-upload' %}">Send payslips in bulk</a></h4>
+                        <a class="card-title unique-text light-content text-center" href="{% url 'user-payslips-upload' %}"><h4>Send payslips in bulk</h4></a>
                         <hr>
                         <!--Text-->
                         <p class="card-text">you can upload a file which contains all the users information about payslips that can be sent directly into the users email.</p>
@@ -47,24 +43,22 @@
                     </div>
                     <div class="card-block">
                         <div class="text-center regular-content">
-                            <a class="btn btn-primary">Send payslip to single user</a>
+                            <a class="btn btn-outline-default">Send payslip to single user</a>
                         </div>
                     </div>
                 </div>
-                <!--/.Card-->
             </div>
-            <div class="col">
+            <div class="col-lg-4 col-md-4 col-sm-12">
                 <div class="card">
                     <i class="fa fa-history fa-4x align-self-center img-fluid card-icon-image" aria-hidden="true"></i>
                     <!--/.Card image-->
 
                     <!--Button-->
-                    <a class="btn-floating btn-action unique-color"><i class="fa fa-chevron-right"></i></a>
 
                     <!--Card content-->
                     <div class="card-block">
                         <!--Title-->
-                        <h4 class="medium-content"><a class="card-title unique-text" href="{% url 'payslips-dashboard-page' %}">See recent reports</a></h4>
+                        <a class="card-title unique-text light-content text-center" href="{% url 'payslips-dashboard-page' %}"><h4>See recent reports</h4></a>
                         <hr>
                         <!--Text-->
                         <p class="card-text">you can have a quick look of details about the payslips history which are recently forwarded.</p>
@@ -72,7 +66,7 @@
                     </div>
                     <div class="card-block">
                         <div class="text-center regular-content">
-                            <a class="btn btn-primary">Go to full dashboard</a>
+                            <a class="btn btn-outline-default">Go to full dashboard</a>
                         </div>
                     </div>
                 </div>

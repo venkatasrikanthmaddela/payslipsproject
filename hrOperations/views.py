@@ -7,7 +7,8 @@ from django.http import HttpResponse
 from django.forms.models import model_to_dict
 from hrOperations.models import PaySlipUploads, PaySlipInfo, smtpStatus
 from payslipsproject.constants import PAYSLIPS_UPLOAD_FORMAT_VERSION, PAYSLIPS_UPLOAD_FORMAT, \
-    PAYSLIPS_UPLOAD_TUPLE_FORMAT, SAMPLE_DATA
+    PAYSLIPS_UPLOAD_TUPLE_FORMAT, SAMPLE_DATA, BASIC_DETAILS, DEDUCTION_FIELDS, EARNING_FIELDS, ACTUAL_EARNING_FIELDS, \
+    EXEMPTION_FIELDS, MANDATORY_FIELDS_FOR_PAYSLIP
 
 __author__ = 'oliverqueen'
 import xlwt
@@ -23,11 +24,14 @@ class BulkUploadUserPage(View):
 
 class BulkPaySlipsPage(View):
     def get(self, request):
+        required_doc_fields = dict()
+        required_doc_fields["mandatoryFields"] = MANDATORY_FIELDS_FOR_PAYSLIP
+        required_doc_fields["exemptionFields"] = EXEMPTION_FIELDS
         try:
             no_of_mails =smtpStatus.objects.get(date=datetime.now().date()).noOfMails
         except:
             no_of_mails = 0
-        return render(request, "hrOperations/sendPayslipsInBulk.html", {"request":request, "noOfMails":no_of_mails})
+        return render(request, "hrOperations/sendPayslipsInBulk.html", {"request":request, "noOfMails":no_of_mails, "requiredFields": required_doc_fields})
 
 
 class PayslipsDashboardPage(View):

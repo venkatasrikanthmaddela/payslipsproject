@@ -48,3 +48,45 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="fieldsInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-lg" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead align-self-center mx-lg-auto">Mandatory and exemption fields info</p>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="red-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-sm-12">
+                        <p class="text-center" style="text-decoration: underline">MANDATORY FIELDS</p>
+                        <ul class="list-group">
+                            {% for each_field in requiredFields.mandatoryFields %}
+                                <li class="list-group-item"><p class="large">{{ each_field }}</p></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-sm-12">
+                        <p class="text-center" style="text-decoration: underline">EXEMPTION FIELDS</p>
+                        <ul class="list-group">
+                            {% for each_field in requiredFields.exemptionFields %}
+                                <li class="list-group-item"><p class="tiny">{{ each_field }}</p></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!--Footer-->
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

@@ -1,10 +1,8 @@
 {% extends 'baseTemplates/linkedFiles.html' %}
 {% load staticfiles %}
 {% block main_content %}
-    {% include 'baseTemplates/modals.html' %}
     <header>
-    <nav class="navbar fixed-top navbar-toggleable-md elegant-color bg-primary">
-        <div class="container">
+        <nav class="navbar fixed-top navbar-toggleable-md elegant-color bg-primary">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#collapseEx2" aria-controls="collapseEx2" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -38,13 +36,10 @@
                     </div>
                 {% endif %}
             </div>
-        </div>
-    </nav>
-    <!--/.Navbar-->
+        </nav>
+        <!--/.Navbar-->
     </header>
+    {% include 'baseTemplates/modals.html' %}
     {% block project_content %}
     {% endblock project_content %}
-    <footer>
-        <p class="center-block regular-content" >© 2016 Company, Inc.</p>
-    </footer>
 {% endblock main_content %}
