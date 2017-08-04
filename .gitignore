@@ -6,3 +6,4 @@ __pycache__
 .idea/dataSources.local.xml
 .idea/dataSources.xml
 .idea/inspectionProfiles/
+.idea
