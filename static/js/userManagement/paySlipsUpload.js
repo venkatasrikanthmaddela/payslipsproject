@@ -11,9 +11,76 @@ $(document).ready(function(){
         }
         else{
             var formData = new FormData($(this).closest("#"+FormId)[0]);
+            $("#pay-slips-file").val("");
             startProcessing(formData);
         }
     });
+    $(".see-preview").click(function(){
+        initializeTable();
+        closePreviewModal();
+        $("#tableContainer").show();
+        $('html, body').animate({
+            scrollTop: $("#tableContainer").offset().top
+        }, 2000);
+    });
+
+    $(".click-to-send").click(function(){
+        sendEmailsToUsers(window.hrmutils.payslipData.previewData);
+    });
+
+    $(document.body).on('click', '.view-payslip', function(){
+        showErrorModal("Announcement", "sorry. the payslip preview feature is still in development stage. inconvenience regretted.")
+        //var employeeEmailId = $(this).attr("data-user-email");
+        //for(var eachPaySlipData in window.hrmutils.payslipData.previewData){
+        //    if(window.hrmutils.payslipData.previewData[eachPaySlipData]["email id"]== employeeEmailId){
+        //        getHtmlTemplate(window.hrmutils.payslipData.previewData[eachPaySlipData])
+        //    }
+        //}
+    });
+
+    function getHtmlTemplate(employeeData){
+        var htmlPreviewCallBacks = {
+            "success": function(data){
+                //showPaySlipPreviewModal(data["employeeData"]);
+                $("#paySlipPreviewBody").html(data["htmlData"]);
+                var doc = new jsPDF();
+                var specialElementHandlers = {
+                    '#paySlipPreviewBody': function (element, renderer) {
+                        return true;
+                    }
+                };
+                doc.fromHTML($('#paySlipPreviewBody').html(), 15, 15, {
+                    'width': 170,
+                    'elementHandlers': specialElementHandlers
+                });
+                doc.save('sample-file.pdf');
+            },
+            "error": function(){
+                alert("error");
+            }
+        };
+        window.hrmutils.getResponse("POST", 'ops-hr/api/payslip-html-preview', {"employeeData":employeeData}, htmlPreviewCallBacks, false)
+    }
+
+    function initializeTable(){
+        var data = window.hrmutils.payslipData.previewData;
+        $("#paySlipsPreviewTable tbody > tr").remove();
+        for(var each_obj in data){
+            drawTable(data[each_obj]);
+        }
+        $('#paySlipsPreviewTable').DataTable();
+    }
+
+    function drawTable(rowData){
+        var row = $("<tr />");
+        $("#paySlipsPreviewTable").append(row);
+        row.append($("<td>" + rowData['employee name'] + "</td>"));
+        row.append($("<td>" + rowData['employee number'] + "</td>"));
+        row.append($("<td>" + rowData['email id'] + "</td>"));
+        row.append($("<td>" + rowData['otherCalculations']['grossEarnings'] + "</td>"));
+        row.append($("<td>" + rowData['otherCalculations']['totalNetPay'] + "</td>"));
+        row.append($("<td>" + '<a class="btn btn-sm btn-outline-default view-payslip" data-user-email='+rowData['email id']+'>view payslip</a>' + "</td>"));
+    }
 
     function startProcessing(formData)
     {
@@ -52,10 +119,15 @@ $(document).ready(function(){
             "success": function(data){
                 setTimeout(function(){
                     closeProcessingModal();
-                    //showSuccessModal('Successfully processed the data..', 'please wait we are about to send mails to the employees.')
-                    alreadySentUsersList = data.alreadySent;
-                    console.log(alreadySentUsersList);
-                    sendEmailsToUsers(data.userData);
+                    var currentUserData = data.userData;
+                    for(var obj_str in currentUserData){
+                        console.log(currentUserData[obj_str]["email id"]);
+                        if(($.inArray(currentUserData[obj_str]["email id"], window.hrmutils.payslipData.currentEmails)== -1)){
+                            window.hrmutils.payslipData.currentEmails.push(currentUserData[obj_str]["email id"]);
+                            window.hrmutils.payslipData.previewData.push(currentUserData[obj_str]);
+                        }
+                    }
+                    previewEmails();
                 }, 2000);
             },
             "error": function(data){
@@ -72,6 +144,12 @@ $(document).ready(function(){
         };
         hrmutils.getResponse("POST","ops-hr/api/send-payslips-emails-in-bulk",extractedData,bulkPayslipsEmailsCallBacks, false)
 
+    }
+
+    function previewEmails(ExtractedData){
+        setTimeout(function(){
+            showPreviewModal();
+        }, 1000);
     }
 
     function sendEmailsToUsers(mailsData){

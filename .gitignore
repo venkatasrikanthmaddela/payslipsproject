@@ -1,5 +1,8 @@
 *.pyc
 db.sqlite3
-payslipsproject
 __pycache__
-.idea
+.idea/workspace.xml
+.idea/dataSources.ids
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/inspectionProfiles/
