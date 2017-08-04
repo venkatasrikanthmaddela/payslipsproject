@@ -90,3 +90,54 @@
         <!--/.Content-->
     </div>
 </div>
+
+<div class="modal fade" id="emailPreviewModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header success-color">
+                <h1 class="heading lead medium-content">Successfully Analyzed the data. Ready For Review</h1>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="red-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa fa-check fa-4x mb-1 animated rotateIn"></i>
+                    <p class="light-content">Data is ready to review. please click below button to review the payslips before sending it to the recipients</p>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <input type="hidden" id="payslipPreview" name="emails-preview-data">
+                <a type="submit" class="btn btn-outline-default see-preview" >Show Preview<i class="fa fa-diamond ml-1"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- Central Modal Medium Success-->
+
+<div class="modal fade" id="paySlipPreviewModal">
+    <div class="modal-info modal-fluid" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body mx-lg-auto" id="paySlipPreviewBody">
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

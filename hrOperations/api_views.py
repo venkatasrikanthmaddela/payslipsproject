@@ -1,3 +1,6 @@
+from django.shortcuts import render
+from django.views import View
+
 from hrOperations.db_ops import UpdateInDb
 from hrOperations.emailWorker import EmailWorkerOps
 from hrOperations.utils import ExcelOperations, PaySlipEmailOps, get_html_string
@@ -44,6 +47,11 @@ class SendPaySlipsInBulk(APIView):
             return Response({"result": "success", "userData":all_html_string, "alreadySent":result_info["alreadySentUsers"]}, 200)
 
 
+class ShowEmailsPreview(View):
+    def get(self, request):
+        return render(request, "hrOperations/paySlipPreview.html")
+
+
 class ProcessEmails(APIView):
     def post(self, request):
         try:
@@ -57,8 +65,23 @@ class ProcessEmails(APIView):
                     return Response({"result": "error", "errorData": email_status.get("errorResult")}, 500)
                 else:
                     each_uploaded_data.emailStatus = True
+                    each_uploaded_data.save()
                     initialize_db.update_smtp_status()
             return Response({"result": "success"}, 200)
         except Exception as e:
             print "Sending mails failed due to.." + str(e.message)
             return Response({"result": "error"}, 500)
+
+
+class ShowPayslipTemplate(APIView):
+    def post(self, request):
+        try:
+            email_work_ops = EmailWorkerOps([request.data.get("employeeData")], request)
+            payslip_data = email_work_ops.prepare_html_content()
+            if payslip_data:
+                return Response({"result":"success", "htmlData":payslip_data[0].get("pdfString")}, 200)
+            else:
+                return Response({"result":"error"}, 500)
+        except Exception as e:
+            return Response({"result":"error", "msg":"Something Went Wrong"}, 500)
+

@@ -63,7 +63,7 @@ class UpdateInDb():
                                                   ppfNumber=each_record.get("ppf number"),
                                                   location=each_record.get("location"),
                                                   effectiveWorkDays=each_record.get("effective work days"),
-                                                  emailStatus=True,
+                                                  emailStatus=False,
                                                   earnedBasicAndDa=each_record.get("earned basic and da"),
                                                   earnedHouseRentAllowance=each_record.get("earned house rent allowance"),
                                                   earnedConveyance=each_record.get("earned conveyance"),

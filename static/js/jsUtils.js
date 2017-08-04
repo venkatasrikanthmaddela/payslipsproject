@@ -90,6 +90,31 @@ function checklogin(){
 
 }(window.hrmutils.myAccount = window.hrmutils.myAccount || {}, jQuery));
 
+(function (payslipData){
+    payslipData.currentEmails = [];
+    payslipData.previewData = [];
+    payslipData.sampleData =
+        [
+            [
+                "Tiger Nixon",
+                "System Architect",
+                "Edinburgh",
+                "5421",
+                "2011/04/25",
+                "$320,800"
+            ],
+            [
+                "Garrett Winters",
+                "Accountant",
+                "Tokyo",
+                "8422",
+                "2011/07/25",
+                "$170,750"
+            ]
+        ]
+
+})(window.hrmutils.payslipData = window.hrmutils.payslipData || {}, jQuery);
+
 
 function showProcessingModal(heading, message){
     $("#processingModalHeading").text(heading);
@@ -111,6 +136,23 @@ function showSuccessModal(heading, message){
 
 function closeProcessingModal(){
     $("#processingModal").modal('hide');
+}
+
+function closePreviewModal(){
+    $("#emailPreviewModalSuccess").modal('hide');
+}
+
+function showPreviewModal(){
+    $("#emailPreviewModalSuccess").modal({backdrop: 'static', keyboard: false}, 'show')
+}
+
+function showPaySlipPreviewModal(htmlString){
+    $("#paySlipPreviewBody").html(htmlString);
+    $("#paySlipPreviewModal").modal('show');
+}
+
+function closePaySlipPreviewModal(){
+    $("#paySlipPreviewModal").modal('hide');
 }
 
 function closeSuccessModal(){

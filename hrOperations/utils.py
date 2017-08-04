@@ -144,11 +144,12 @@ class PaySlipEmailOps():
 
 
 def get_html_string(data_dict, request):
-    # html_safe_string = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
-    # pdf_string = render_to_string('baseTemplates/pdfTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":pay_slip_data, "request":request}))
-    html_safe_string = ""
-    pdf_string = ""
-    return html_safe_string, pdf_string
+    pay_slip_template = dict()
+    # pay_slip_template["htmlString"] = render_to_string('baseTemplates/emailTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":data_dict, "request":request}))
+    # pay_slip_template["pdfString"] = render_to_string('baseTemplates/pdfTemplate.html', RequestContext(request, {"STATIC_CDN_URL":STATIC_CDN_URL, "companyDetails":COMPANY_DETAILS, "paySlipData":data_dict, "request":request}))
+    pay_slip_template["htmlString"] = ""
+    pay_slip_template["pdfString"] = ""
+    return pay_slip_template["htmlString"], pay_slip_template["pdfString"]
 
 
 def get_html_string_from_db(model_data, request):
